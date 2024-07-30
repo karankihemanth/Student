@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #2575fc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #6a11cb;
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-form button {
+            background-color: #2575fc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-form button:hover {
+            background-color: #6a11cb;
+        }
+
+        .message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <div class="btn-group">
+            <button class="btn" onclick="showForm('parent')">Parent</button>
+            <button class="btn" onclick="showForm('student')">Student</button>
+            <button class="btn" onclick="showForm('admin')">Admin</button>
+        </div>
+        <div id="parent" class="login-form">
+            <h3>Parent Login</h3>
+            <input type="text" id="parent-username" placeholder="Username" required>
+            <input type="password" id="parent-password" placeholder="Password" required>
+            <button onclick="submitLogin('parent')">Login</button>
+            <div id="parent-message" class="message"></div>
+        </div>
+        <div id="student" class="login-form">
+            <h3>Student Login</h3>
+            <input type="text" id="student-username" placeholder="Username" required>
+            <input type="password" id="student-password" placeholder="Password" required>
+            <button onclick="submitLogin('student')">Login</button>
+            <div id="student-message" class="message"></div>
+        </div>
+        <div id="admin" class="login-form">
+            <h3>Admin Login</h3>
+            <input type="text" id="admin-username" placeholder="Username" required>
+            <input type="password" id="admin-password" placeholder="Password" required>
+            <button onclick="submitLogin('admin')">Login</button>
+            <div id="admin-message" class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        function showForm(formId) {
+            const forms = document.querySelectorAll('.login-form');
+            forms.forEach(form => {
+                form.classList.remove('active');
+                if (form.id === formId) {
+                    form.classList.add('active');
+                }
+            });
+        }
+
+        function submitLogin(userType) {
+            const username = document.getElementById(`${userType}-username`).value;
+            const password = document.getElementById(`${userType}-password`).value;
+            const formData = new URLSearchParams();
+            formData.append('user_type', userType);
+            formData.append('username', username);
+            formData.append('password', password);
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text();
+                }
+            })
+            .then(text => {
+                const messageDiv = document.getElementById(`${userType}-message`);
+                messageDiv.textContent = text;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

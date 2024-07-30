@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #2575fc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #6a11cb;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Dashboard</h2>
+        <form id="student-form">
+            <h3>Check Marks</h3>
+            <input type="text" id="student-id" placeholder="Your ID" required>
+            <button type="button" onclick="checkMarks()">Check Marks</button>
+            <h3>Check Attendance</h3>
+            <button type="button" onclick="checkAttendance()">Check Attendance</button>
+        </form>
+        <p id="marks"></p>
+        <p id="attendance"></p>
+        <script>
+            function checkMarks() {
+                const id = document.getElementById('student-id').value;
+                fetch(`/student/marks/${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const marks = data.marks || {};
+                        const totalMarks = data.totalMarks || 0;
+                        const totalPassed = data.totalPassed || 0;
+                        document.getElementById('marks').innerText = `Marks:\n Subject1: ${marks.subject1}\n Subject2: ${marks.subject2}\n Subject3: ${marks.subject3}\n Subject4: ${marks.subject4}\n Subject5: ${marks.subject5}\n Subject6: ${marks.subject6}\n Subject7: ${marks.subject7}\n Total Marks: ${totalMarks}\n  Subjects Passed: ${totalPassed}`;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching marks:', error);
+                        document.getElementById('marks').innerText = 'Error fetching marks.';
+                    });
+            }
+
+            function checkAttendance() {
+                const id = document.getElementById('student-id').value;
+                fetch(`/student/attendance/${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('attendance').innerText = `Attendance: ${data.attendance}`;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching attendance:', error);
+                        document.getElementById('attendance').innerText = 'Error fetching attendance.';
+                    });
+            }
+        </script>
+    </div>
+</body>
+</html>

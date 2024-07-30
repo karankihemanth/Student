@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #2575fc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #6a11cb;
+        }
+
+        .btn-group {
+            margin-bottom: 30px;
+        }
+
+        .btn-group button {
+            background-color: #2575fc;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .btn-group button:hover {
+            background-color: #6a11cb;
+        }
+
+        .form-section input[type="number"] {
+            max-width: 80%;
+            margin: 5px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+
+        <div class="btn-group">
+            <button onclick="showForm('create-student')">Create Student</button>
+            <button onclick="showForm('create-parent')">Create Parent</button>
+            <button onclick="showForm('delete-student')">Delete Student</button>
+            <button onclick="showForm('delete-parent')">Delete Parent</button>
+            <button onclick="showForm('update-marks')">Update Marks</button>
+            <button onclick="showForm('update-attendance')">Update Attendance</button>
+            <button onclick="showForm('exam-result')">Add Exam Results</button>
+        </div>
+
+        <div id="create-student" class="form-section">
+            <h3>Create Student</h3>
+            <form method="POST" action="/admin/create-student">
+                <input type="text" name="id" placeholder="Student ID" required>
+                <input type="text" name="username" placeholder="Student Username" required>
+                <input type="password" name="password" placeholder="Student Password" required>
+                <button type="submit">Create Student</button>
+            </form>
+        </div>
+
+        <div id="create-parent" class="form-section">
+            <h3>Create Parent</h3>
+            <form method="POST" action="/admin/create-parent">
+                <input type="text" name="id" placeholder="Parent ID" required>
+                <input type="text" name="username" placeholder="Parent Username" required>
+                <input type="password" name="password" placeholder="Parent Password" required>
+                <button type="submit">Create Parent</button>
+            </form>
+        </div>
+
+        <div id="delete-student" class="form-section">
+            <h3>Delete Student</h3>
+            <form method="POST" action="/admin/delete-student">
+                <input type="text" name="id" placeholder="Student ID" required>
+                <button type="submit">Delete Student</button>
+            </form>
+        </div>
+
+        <div id="delete-parent" class="form-section">
+            <h3>Delete Parent</h3>
+            <form method="POST" action="/admin/delete-parent">
+                <input type="text" name="id" placeholder="Parent ID" required>
+                <button type="submit">Delete Parent</button>
+            </form>
+        </div>
+
+        <div id="update-marks" class="form-section">
+            <h3>Update Marks</h3>
+            <form method="POST" action="/admin/update-marks">
+                <input type="text" name="id" placeholder="Student ID" required>
+                <input type="number" name="subject" placeholder="Subject (1-7)" required>
+                <input type="number" name="marks" placeholder="New Marks" required>
+                <button type="submit">Update Marks</button>
+            </form>
+        </div>
+
+        <div id="update-attendance" class="form-section">
+            <h3>Update Attendance</h3>
+            <form method="POST" action="/admin/update-attendance">
+                <input type="text" name="id" placeholder="Student ID" required>
+                <input type="number" name="attendance" placeholder="New Attendance" required>
+                <button type="submit">Update Attendance</button>
+            </form>
+        </div>
+
+        <div id="exam-result" class="form-section">
+            <h3>Add Exam Results</h3>
+            <form method="POST" action="/admin/add-exam-result">
+                <input type="text" name="id" placeholder="Student ID" required>
+                <input type="number" name="subject1" placeholder="Subject 1" required>
+                <input type="number" name="subject2" placeholder="Subject 2" required>
+                <input type="number" name="subject3" placeholder="Subject 3" required>
+                <input type="number" name="subject4" placeholder="Subject 4" required>
+                <input type="number" name="subject5" placeholder="Subject 5" required>
+                <input type="number" name="subject6" placeholder="Subject 6" required>
+                <input type="number" name="subject7" placeholder="Subject 7" required>
+                <button type="submit">Add Results</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showForm(formId) {
+            const sections = document.querySelectorAll('.form-section');
+            sections.forEach(section => {
+                section.style.display = section.id === formId ? 'block' : 'none';
+            });
+        }
+
+        // Initialize to show the first form by default
+        showForm('create-student');
+    </script>
+</body>
+</html>

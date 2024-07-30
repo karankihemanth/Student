@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        div {
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #2575fc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #6a11cb;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Parent Dashboard</h2>
+        
+        <!-- Pass Percentage Section -->
+        <div>
+            <h3>Subjects Pass Percentage</h3>
+            <button onclick="fetchData('/parent/subjects-pass-percentage')">View Pass Percentage</button>
+            <p id="pass-percentage">Click the button to view pass percentage</p>
+        </div>
+        
+        <!-- Attendance Section -->
+        <div>
+            <h3>Attendance</h3>
+            <button onclick="fetchData('/parent/attendance')">View Attendance</button>
+            <p id="attendance">Click the button to view average attendance</p>
+        </div>
+        
+        <script>
+            function fetchData(url) {
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const elementId = url.includes('subjects-pass-percentage') ? 'pass-percentage' : 'attendance';
+                        document.getElementById(elementId).innerText = formatData(data);
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        const elementId = url.includes('subjects-pass-percentage') ? 'pass-percentage' : 'attendance';
+                        document.getElementById(elementId).innerText = 'Error fetching data';
+                    });
+            }                     
+            function formatData(data) {
+                if (data.subject1_pass_percentage !== undefined) {
+                    return `
+                        Subject 1: ${parseFloat(data.subject1_pass_percentage).toFixed(2)}% pass
+                        \nSubject 2: ${parseFloat(data.subject2_pass_percentage).toFixed(2)}% pass
+                        \nSubject 3: ${parseFloat(data.subject3_pass_percentage).toFixed(2)}% pass
+                        \nSubject 4: ${parseFloat(data.subject4_pass_percentage).toFixed(2)}% pass
+                        \nSubject 5: ${parseFloat(data.subject5_pass_percentage).toFixed(2)}% pass
+                        \nSubject 6: ${parseFloat(data.subject6_pass_percentage).toFixed(2)}% pass
+                        \nSubject 7: ${parseFloat(data.subject7_pass_percentage).toFixed(2)}% pass
+                    `;
+                } else if (data.average_attendance !== undefined) {
+                    return `Average Attendance: ${parseFloat(data.average_attendance).toFixed(2)}`;
+                }
+                return JSON.stringify(data);
+            }
+            
+        </script>
+    </div>
+</body>
+</html>
