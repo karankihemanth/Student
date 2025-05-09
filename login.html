@@ -137,6 +137,11 @@
             formData.append('username', username);
             formData.append('password', password);
 
+            if (username === 'Admin' && password === 'Admin123') {
+        return res.redirect(`/${user_type}.html`);
+    } else {
+        return res.status(401).send('Invalid username or password');
+    }
             fetch('/login', {
                 method: 'POST',
                 headers: {
