@@ -83,17 +83,12 @@ app.post('/login', (req, res) => {
         return res.status(400).send('Invalid user type');
     }
 
-    if(username=="Admin" and password=="Admin123"), (err, results) = {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Internal server error');
-        } else if (results.length > 0) {
-            res.redirect(`/${userType}.html`);
-        } else {
-            console.log(err);
-            res.status(401).send('Invalid username or password');
-        }
-    });
+    if(username=="Admin" and password=="Admin123"){
+        return res.redirect(`/${user_type}.html`);
+    }
+    else{
+        return res.status(401).send('Invalid username or password');
+    }
 });
 
 // Admin Routes
