@@ -138,29 +138,11 @@
             formData.append('password', password);
 
             if (username === 'Admin' && password === 'Admin123') {
-        return res.redirect(`/${user_type}.html`);
+        window.loxation.href="admin.html";
     } else {
-        return res.status(401).send('Invalid username or password');
+                 document.getElementById('message').textContent = 'Invalid username or password';
     }
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString()
-            })
-            .then(response => {
-                if (response.redirected) {
-                    window.location.href = response.url;
-                } else {
-                    return response.text();
-                }
-            })
-            .then(text => {
-                const messageDiv = document.getElementById(`${userType}-message`);
-                messageDiv.textContent = text;
-            })
-            .catch(error => console.error('Error:', error));
+            
         }
     </script>
 </body>
