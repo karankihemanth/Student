@@ -84,10 +84,10 @@ app.post('/login', (req, res) => {
     }
 
     if(username=="Admin" and password=="Admin123"){
-        return res.redirect(`/${userType}.html`);
+        res.redirect(`/${userType}.html`);
     }
     else{
-        return res.status(401).send('Invalid username or password');
+        res.status(401).send('Invalid username or password');
     }
 });
 
